@@ -1,0 +1,74 @@
+<html>
+<head>
+    <title>Markov Zinciri İsim Üretici</title>
+    <style>
+        table{margin:auto;}
+        td{ background-color:#eee; padding:5px;}
+    </style>
+</head>
+<body>
+<script>
+
+    //MARKOV ZİNCİRİ
+
+    function MarkovZinciri(n, ornekler) {
+
+        //örnekleme genişliği
+        this.n = n;
+
+        //zincir oluştur
+        this.zincir = {};
+        for (var i in ornekler) {
+
+            //örnek kelimeyi küçük harf olarak al
+            var ornek = ornekler[i].toLowerCase();
+
+            //her bir 
+            for (var j = 0; j < ornek.length - n; j++) {
+                var token = ornek.substring(j, j + n);
+                this.zincir[token] = (this.zincir[token] || "") + ornek[j + n];
+            }
+        }
+
+        //rasgele kelime üret
+        this.uret = function () {
+
+            //5 ile 15 arası rasgele uzunluk
+            var uzunluk = 6 + Math.random() * 10;
+
+            //rasgele bir anahtar seç
+            var anahtarlar = Object.keys(this.zincir);
+            var kelime = anahtarlar[Math.floor(Math.random() * anahtarlar.length)];
+
+            //kelime uzunluğu minimum uzunluktan düşük iken
+            while (kelime.length < uzunluk) {
+
+                //kelimeyi zincerde ara
+                var deger = this.zincir[kelime.substring(kelime.length - this.n)];
+
+                //bulunamadıysa çık
+                if (!deger) break;
+
+                //değerden rasgele bir karekter seç
+                kelime += deger[Math.floor(Math.random() * deger.length)];
+            }
+
+            //ilk harfini büyüt
+            return kelime[0].toUpperCase() + kelime.slice(1);
+        };
+
+    }
+
+    //TEST
+    var elf = new MarkovZinciri(4, ["Aegnor", "Aerandir", "Amras", "Angrod", "Aredhel", "Arminas", "Beleg", "Caranthir", "Celeborn", "Celebrimdor","Celegorm", "Círdan", "Cúthalion", "Daeron", "Denethor", "Edrahil", "Elladan", "Elrohir", "Elrond", "Elros", "Eöl", "Ereinion","Erestor", "Fëanor", "Fingon", "Finrod", "Galdor", "Galion", "Gelmir", "Gilgalad", "Glorfindel", "Guilin", "Gwindor","Haldir", "Legolas", "Lindir", "Mablung", "Maglor", "Maedhros", "Maeglin", "Orodreth", "Orophin", "Saeros", "Turgon","Arwen", "Berúthiel", "Celebrían", "Celebrindal", "Elwing", "Finduilas", "Galadhriel", "Galadriel", "Idril", "Lúthien", "Nimloth", "Nimrodel"]);
+    var cuce = new MarkovZinciri(3, ["Anar", "Balin", "Beli", "Bifur", "Bláin", "Bofur", "Bombur", "Borin", "Burin", "Dáin", "Dori", "Durin", "Dwalin", "Farin", "Fíli", "Flói", "Frár","Frerin", "Frór", "Fundin", "Gimli", "Ginar", "Glóin", "Gróin", "Grór", "Hanar", "Kíli", "Lófar", "Lóni", "Náin", "Náli", "Nár", "Nói", "Nori", "Óin","Ónar", "Óri", "Póri", "Regin", "Thorin", "Thráin", "Thrór", "Vidar", "Dís", "Hón", "Kóna", "Már"]);
+    var hobit = new MarkovZinciri(4, ["Adalgrim", "Adelard", "Andwise", "Anson", "Balbo", "Bandobras", "Bergil", "Bilbo", "Bingo", "Blanco", "Bodo", "Bowman", "Bucca","Bungo", "Cotman", "Cottar", "Dindonas", "Doderic", "Dodinas", "Drogo", "Dudo", "Erling", "Falco", "Fastolph", "Fastred", "Ferdibrand","Ferdinand", "Ferumbras", "Filibert", "Flambard", "Folco", "Fortinbras", "Fosco", "Fredegar", "Frodo", "Gerontius", "Gorbadoc","Gorbulas", "Gorhendad", "Gormadoc", "Griffo", "Gundabald", "Halfast", "Halfred", "Hamfast", "Hamson", "Harding", "Hending","Hildibrand", "Hildifons", "Hildigard", "Hildigrim", "Hob", "Hobson", "Holfoot", "Holman", "Hugo", "Ilberic", "Isembard","Isembold", "Isengar", "Isemgrim", "Isumbras", "Largo", "Longo", "Lotho", "Madoc", "Marcho", "Marmadas", "Marmadoc", "Marroc","Meriadoc", "Merimac", "Merimas", "Milo", "Minto", "Moro", "Mosco", "Mungo", "Nob", "Odo", "Odovacar", "Olo", "Orgolas","Otho", "Paladin", "Peregrin", "Polo", "Ponto", "Porto", "Posco", "Reginard", "Rendigar", "Robin", "Rorimac", "Rudigar", "Rufus", "Sadoc","Samwise", "Sancho", "Saradas", "Saradoc", "Seredic", "Sigismond", "Tobold", "Togo", "Tolma", "Tolman", "Wilcome", "Wilibald", "Will", "Wiseman","Adaldrida", "Adamanta", "Amaranth", "Asphodel", "Belba", "Bell", "Belladonna", "Berylla", "Camellia", "Celandine","Chica", "Daisy", "Diamond", "Donnamira", "Dora", "Eglantine", "Elanor", "Gilly", "Goldilocks", "Hanna", "Hilda", "Lily","Linda", "Lobelia", "Malva", "Marigold", "May", "Melilot", "Menegilda", "Mentha", "Mimosa", "Mirabella", "Myrtle", "Pansy", "Pearl","Peony", "Pervinca", "Pimpernel", "Poppy", "Primrose", "Primula", "Prisca", "Rosamunda", "Rosa", "Rose", "Ruby", "Salvia", "Tanta"]);
+    document.write("<table><tr><th>Elf</th><th>Cüce</th><th>Hobit</th></tr>");
+    for (var i = 0; i < 20; i++) {
+        document.write("<tr><td>" + elf.uret() + "</td><td>" + cuce.uret() + "</td><td>" + hobit.uret() + "</td></tr>");
+    }
+    document.write("</table>");
+
+</script>
+</body>
+</html>
